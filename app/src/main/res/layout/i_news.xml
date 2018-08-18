@@ -1,75 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/newsItem"
+    android:layout_margin="@dimen/i_margin_left_right"
+    android:background="@color/nv_background"
+    android:elevation="2dp"
     tools:ignore="HardcodedText">
 
-    <ImageView
-        android:id="@+id/picture"
+    <FrameLayout
+        android:id="@+id/main_info"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:contentDescription="news image" />
+        android:layout_height="240dp">
 
-    <LinearLayout
-        android:id="@+id/news_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/picture"
-        android:orientation="vertical"
-        android:paddingBottom="10dp"
-        android:paddingEnd="20dp"
-        android:paddingStart="20dp"
-        android:paddingTop="10dp">
+        <ImageView
+            android:id="@+id/picture"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:scaleType="centerCrop"
+            android:layout_alignParentTop="true"
+            android:contentDescription="news image" />
 
-        <com.lucevent.newsup.view.util.AppBoldTextView
-            android:id="@+id/title"
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/gradient_background"
+            android:contentDescription="news image" />
+
+        <LinearLayout
+            android:id="@+id/news_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            android:text="Title"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_below="@+id/picture"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp">
 
-        <com.lucevent.newsup.view.util.AppTextView
-            android:id="@+id/description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:fontFamily="sans-serif-light"
-            android:maxLines="3"
-            android:paddingTop="6dp"
-            android:text="Description\nUp to 3 lines\nYeah"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            <com.lucevent.newsup.view.util.AppBoldTextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:text="Title"
+                android:maxLines="1"
+                android:textColor="@color/nv_background"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-    </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
 
-    <View
-        android:id="@+id/divisor"
+    <com.lucevent.newsup.view.util.AppTextView
+        android:id="@+id/description"
         android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_below="@+id/news_description"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
-        android:background="@color/divisor" />
-
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_info"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-light"
+        android:maxLines="3"
+        android:paddingTop="6dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="Description\nUp to 3 lines\nYeah"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
     <LinearLayout
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/divisor"
+        android:layout_below="@+id/description"
         android:gravity="bottom"
         android:paddingBottom="10dp"
         android:paddingEnd="26dp"
         android:paddingStart="26dp"
         android:paddingTop="10dp">
 
-        <View
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/logo"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginEnd="8dp"
-            android:background="#aaa" />
+            app:riv_corner_radius="8dp" />
 
         <com.lucevent.newsup.view.util.AppTextView
             android:id="@+id/date"
@@ -77,6 +90,7 @@
             android:layout_height="20dp"
             android:fontFamily="sans-serif-light"
             android:gravity="bottom"
+            android:textColor="@color/nv_text"
             android:text="2 minutes ago"
             android:textSize="@dimen/i_date_text_size" />
 
@@ -91,6 +105,7 @@
         android:layout_marginEnd="14dp"
         android:background="@drawable/ripple_round"
         android:contentDescription="bookmark"
-        android:src="@drawable/sel_btn_bookmark" />
+        android:src="@drawable/sel_btn_bookmark"
+        android:backgroundTint="@color/colorPrimary"/>
 
 </RelativeLayout>

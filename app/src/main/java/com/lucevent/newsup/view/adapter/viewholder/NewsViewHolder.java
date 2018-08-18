@@ -57,7 +57,9 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
 		}
 
 		mTitle.setText(Html.fromHtml(news.title));
-		mDescription.setText(news.description);
+		if (null != mDescription) {
+			mDescription.setText(news.description);
+		}
 		mDate.setText(Date.getAge(news.date));
 		mBookmark.setSelected(bookmarked);
 

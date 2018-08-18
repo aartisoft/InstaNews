@@ -20,6 +20,7 @@ import com.lucevent.newsup.view.util.NewsAdapterList;
 import com.lucevent.newsup.view.util.OnMoreSectionsClickListener;
 
 import java.util.Collection;
+import java.util.Random;
 
 public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -47,7 +48,15 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 		RecyclerView.ViewHolder vh = null;
 		switch (viewType) {
 			case TYPE_NEWS:
-				View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.i_news, parent, false);
+				final int min = 0;
+				final int max = 1;
+				final int random = new Random().nextInt((max - min) + 1) + min;
+				View v;
+				if (random != 0) {
+					v = LayoutInflater.from(parent.getContext()).inflate(R.layout.i_news, parent, false);
+				} else {
+					v = LayoutInflater.from(parent.getContext()).inflate(R.layout.i_news_compact, parent, false);
+				}
 				v.setOnClickListener(mOnClick);
 				vh = new NewsViewHolder(v, mOnBookmarkClick);
 				break;

@@ -9,3 +9,8 @@
 /backend/build
 /debugbackend/build
 /data/build
+.idea/gradle.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/runConfigurations.xml
+.idea/vcs.xml

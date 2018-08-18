@@ -40,5 +40,5 @@
     <dimen name="setting_row">16sp</dimen>
 
     <dimen name="i_date_text_size">8sp</dimen>
-
+    <dimen name="button_toggle_size">20dp</dimen>
 </resources>
