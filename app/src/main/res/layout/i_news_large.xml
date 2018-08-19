@@ -8,22 +8,23 @@
     android:elevation="2dp"
     tools:ignore="HardcodedText">
 
+
     <FrameLayout
         android:id="@+id/main_info"
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="240dp">
 
         <ImageView
             android:id="@+id/picture"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="240dp"
+            android:scaleType="centerCrop"
             android:layout_alignParentTop="true"
-            android:contentDescription="news image"
-            android:scaleType="centerCrop" />
+            android:contentDescription="news image" />
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="240dp"
             android:layout_alignParentTop="true"
             android:background="@drawable/gradient_background"
             android:contentDescription="news image" />
@@ -48,8 +49,8 @@
                 android:layout_height="20dp"
                 android:fontFamily="sans-serif-light"
                 android:gravity="bottom"
-                android:text="2 minutes ago"
                 android:textColor="@color/nv_background"
+                android:text="2 minutes ago"
                 android:textSize="@dimen/i_date_text_size" />
 
         </LinearLayout>
@@ -62,10 +63,9 @@
             android:layout_marginEnd="10dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/ripple_round"
-            android:backgroundTint="@color/nv_background"
             android:contentDescription="bookmark"
-            android:src="@drawable/sel_btn_bookmark" />
-
+            android:src="@drawable/sel_btn_bookmark"
+            android:backgroundTint="@color/nv_background"/>
         <LinearLayout
             android:id="@+id/news_description"
             android:layout_width="match_parent"
@@ -82,27 +82,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
-                android:maxLines="1"
                 android:text="Title"
+                android:maxLines="1"
                 android:textColor="@color/nv_background"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
+            <com.lucevent.newsup.view.util.AppTextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-light"
+                android:maxLines="3"
+                android:textColor="@color/nv_background"
+                android:text="Description\nUp to 3 lines\nYeah"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
     </FrameLayout>
-
-    <com.lucevent.newsup.view.util.AppTextView
-        android:id="@+id/description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/main_info"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:ellipsize="end"
-        android:fontFamily="sans-serif-light"
-        android:maxLines="3"
-        android:paddingTop="6dp"
-        android:text="Description\nUp to 3 lines\nYeah"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

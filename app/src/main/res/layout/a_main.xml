@@ -48,6 +48,12 @@
                             android:textColor="@color/nv_background"
                             android:textSize="@dimen/text_title_size"/>
                         <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="centerCrop"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/logo"/>
+                        <ImageView
                             android:id="@+id/img_night"
                             android:layout_width="@dimen/button_toggle_size"
                             android:layout_height="@dimen/button_toggle_size"

@@ -53,9 +53,9 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 				final int random = new Random().nextInt((max - min) + 1) + min;
 				View v;
 				if (random != 0) {
-					v = LayoutInflater.from(parent.getContext()).inflate(R.layout.i_news, parent, false);
+					v = LayoutInflater.from(parent.getContext()).inflate(R.layout.i_news_large, parent, false);
 				} else {
-					v = LayoutInflater.from(parent.getContext()).inflate(R.layout.i_news_compact, parent, false);
+					v = LayoutInflater.from(parent.getContext()).inflate(R.layout.i_news_large, parent, false);
 				}
 				v.setOnClickListener(mOnClick);
 				vh = new NewsViewHolder(v, mOnBookmarkClick);
