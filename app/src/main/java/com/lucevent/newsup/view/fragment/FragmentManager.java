@@ -85,7 +85,6 @@ public class FragmentManager {
 		else
 			mFragmentManager.popBackStack(mStack.get(mStackPointer).backStackId, 0);
 
-		updateCheckedItem(mStack.get(mStackPointer).navId, currentFragment.navId);
 
 		return getCurrentFragment();
 	}
@@ -101,7 +100,6 @@ public class FragmentManager {
 		mStack.add(tmp);
 		mStackPointer = 0;
 
-		updateCheckedItem(tmp.navId, old_nav_id);
 	}
 
 	public Fragment getCurrentFragment()
@@ -119,27 +117,5 @@ public class FragmentManager {
 		mStack.get(position).navId = navId;
 	}
 
-	public void updateCheckedItem(int new_item_id, int old_item_id)
-	{
-		if (mNavigationView != null) {
-			// uncheck old item (only if it belongs to the action bar)
-			if (mNavigationView.getMenu().findItem(old_item_id) == null) {
-				View v = mNavigationView.getHeaderView(0).findViewById(old_item_id);
-				if (v != null)
-					v.setSelected(false);
-			}
-
-			// check the new item
-			if (mNavigationView.getMenu().findItem(new_item_id) != null) {
-				mNavigationView.setCheckedItem(new_item_id);
-			} else {
-				mNavigationView.setCheckedItem(R.id.dummy);
-
-				View v = mNavigationView.getHeaderView(0).findViewById(new_item_id);
-				if (v != null)
-					v.setSelected(true);
-			}
-		}
-	}
 
 }

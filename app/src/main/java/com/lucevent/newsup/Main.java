@@ -9,11 +9,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
@@ -50,13 +51,16 @@ import com.lucevent.newsup.view.fragment.NewsListFragment;
 import com.lucevent.newsup.view.fragment.NotesFragment;
 import com.lucevent.newsup.view.fragment.NotificationsFragment;
 import com.lucevent.newsup.view.fragment.StatisticsFragment;
+import com.lucevent.newsup.view.util.BottomNavigationListener;
+import com.lucevent.newsup.view.util.BottomNavigationViewBehavior;
+import com.lucevent.newsup.view.util.BottomNavigationViewHelper;
 import com.lucevent.newsup.view.util.OnBackPressedListener;
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        OnSettingsChangeListener, OnReplaceFragmentListener {
+        OnSettingsChangeListener, OnReplaceFragmentListener, BottomNavigationListener {
 
     private NewsListFragment newsFragment;
-
+    private BottomNavigationView mBottomNavigationView;
     private FragmentManager fragmentManager;
     private KernelManager dataManager;
     private PermissionHandler permissionHandler;
@@ -64,6 +68,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     private TextView tvTitleToolbar;
     public DrawerLayout drawer;
     private ImageView toggleBtn;
+    private BottomNavigationView mBottomView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +119,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView.setNavigationItemSelectedListener(this);
 
         fragmentManager = new FragmentManager(this, navigationView, R.id.main_content);
-
+        setupBottomNavigationView();
         setUpDrawer(night_mode_on);
         updateFavorites();
 
@@ -170,6 +175,24 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         }
     }
 
+    private void setupBottomNavigationView() {
+        mBottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mBottomNavigationView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewBehavior());
+        BottomNavigationViewHelper.removeShiftMode(mBottomNavigationView);
+        if (mBottomNavigationView != null) {
+            // Set action to perform when any menu-item is selected.
+            mBottomNavigationView.setOnNavigationItemSelectedListener(
+                    new BottomNavigationView.OnNavigationItemSelectedListener() {
+                        @Override
+                        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                            navigateTo(item.getItemId());
+                            return false;
+                        }
+                    });
+        }
+    }
+
     private void setUpDrawer(boolean night_mode_on) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
@@ -177,22 +200,6 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             navigationView.setItemIconTintList(null);
 
         View header = navigationView.getHeaderView(0);
-
-        ImageButton stats = (ImageButton) header.findViewById(R.id.nav_stats);
-        if (ProSettings.isDeveloperModeEnabled())
-            stats.setVisibility(View.VISIBLE);
-        else
-            stats.setVisibility(View.GONE);
-
-        lastItemSelected = R.id.nav_my_news;
-        header.findViewById(R.id.nav_my_news).setSelected(true);
-
-        header.findViewById(R.id.nav_my_news).setOnLongClickListener(onDrawerActionBarButtonLongClick);
-        header.findViewById(R.id.nav_events).setOnLongClickListener(onDrawerActionBarButtonLongClick);
-        header.findViewById(R.id.nav_saved_news).setOnLongClickListener(onDrawerActionBarButtonLongClick);
-        header.findViewById(R.id.nav_read_news).setOnLongClickListener(onDrawerActionBarButtonLongClick);
-        header.findViewById(R.id.nav_stats).setOnLongClickListener(onDrawerActionBarButtonLongClick);
-        header.findViewById(R.id.nav_more_publications).setOnLongClickListener(onDrawerActionBarButtonLongClick);
 
         MenuItem notes = navigationView.getMenu().findItem(R.id.nav_notes);
         if (ProSettings.isDeveloperModeEnabled())
@@ -222,9 +229,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 case R.id.nav_read_news:
                     msg = R.string.read_news;
                     break;
-                case R.id.nav_stats:
-                    msg = R.string.statistics;
-                    break;
+
                 case R.id.nav_more_publications:
                     msg = R.string.more_publications;
                     break;
@@ -309,10 +314,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 fragment = new HistorialFragment();
                 title = getString(R.string.read_news);
                 break;
-            case R.id.nav_stats:
-                fragment = new StatisticsFragment();
-                title = getString(R.string.statistics);
-                break;
+
             case R.id.nav_more_publications:
                 Intent intent = new Intent(this, SelectSitesActivity.class);
                 intent.putExtra(AppCode.PURPOSE, SelectSitesActivity.For.SELECT_ONE);
@@ -357,13 +359,11 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
             else {
                 newsFragment.setUp();
-                fragmentManager.updateCheckedItem(where, lastItemSelected);
             }
         } else {
             fragmentManager.replaceFragment(fragment, where,
                     fragmentManager.getCurrentFragment() == newsFragment);
 
-            fragmentManager.updateCheckedItem(where, lastItemSelected);
         }
         tvTitleToolbar.setText(title);
         setUpColors(colorCode);
@@ -390,14 +390,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         //noinspection ConstantConditions
         ab.setBackgroundColor(barColor);
         ab.setTitleTextColor(textColor);
-
-        if (!navBlack)
-            //noinspection ConstantConditions
-            ab.getNavigationIcon().clearColorFilter();
-        else
-            //noinspection ConstantConditions
-            ab.getNavigationIcon().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
-
+        
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (statusBarColor == 0xffcccccc) {
                 drawer.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -456,4 +449,13 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         finish();
     }
 
+    @Override
+    public void addBottomNavi() {
+        mBottomNavigationView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void removeBottomNavi() {
+        mBottomNavigationView.setVisibility(View.GONE);
+    }
 }
